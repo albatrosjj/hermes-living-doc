@@ -522,6 +522,7 @@
 <div id="progress-bar"></div>
 <div class="vignette"></div>
 <div id="chapter-nav"></div>
+<audio id="bg-music" loop src="audio/background.mp3" preload="none"></audio>
 
 <div id="lang-switch">
   <button class="active" data-lang="en">EN</button>
@@ -715,6 +716,8 @@
   const progress = document.getElementById('progress-bar');
   const nav = document.getElementById('chapter-nav');
   const langBtns = document.querySelectorAll('#lang-switch button');
+  const bgMusic = document.getElementById('bg-music');
+  if (bgMusic) bgMusic.volume = 0.06;
 
   // Language switcher
   function setLang(lang) {
@@ -724,7 +727,7 @@
       el.innerHTML = el.dataset[lang];
     });
     // Update audio sources
-    document.querySelectorAll('audio').forEach(a => {
+    document.querySelectorAll('.section audio').forEach(a => {
       const src = a.querySelector('source');
       if (src) {
         const base = src.src.replace(/\.(ogg|mp3)$/, '').replace(/-(en|tr)$/, '');
@@ -756,12 +759,21 @@
     // Unlock audio context by playing silent sound
     const unlock = new Audio();
     unlock.play().catch(()=>{});
+    // Start background music
+    if (bgMusic) bgMusic.play().catch(()=>{});
     // Try to play first active section audio
     const active = document.querySelector('.section.active');
     if (active) {
       const audio = active.querySelector('audio');
       if (audio) audio.play().catch(()=>{});
     }
+  });
+
+  // Ducking: lower bg music when narration plays
+  document.querySelectorAll('.section audio').forEach(a => {
+    a.addEventListener('play', () => { if (bgMusic) bgMusic.volume = 0.015; });
+    a.addEventListener('pause', () => { if (bgMusic) bgMusic.volume = 0.06; });
+    a.addEventListener('ended', () => { if (bgMusic) bgMusic.volume = 0.06; });
   });
 
   const observer = new IntersectionObserver((entries) => {
@@ -772,7 +784,7 @@
         dots.forEach((d,i) => d.classList.toggle('active', i === idx));
         const audio = entry.target.querySelector('audio');
         if (audio) {
-          document.querySelectorAll('audio').forEach(a => {
+          document.querySelectorAll('.section audio').forEach(a => {
             if (a !== audio) { a.pause(); a.currentTime = 0; }
           });
           audio.play().catch(()=>{});
