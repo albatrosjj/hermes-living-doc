@@ -4,50 +4,56 @@
 
 ## What Is This?
 
-A fully AI-generated scrollytelling documentary about lesser-known human stories from World War II. Every image, every voice, every word of narration was created by artificial intelligence — orchestrated entirely through the Hermes Agent framework.
+A fully AI-generated bilingual (EN/TR) scrollytelling documentary about lesser-known human stories from World War II. Every image, every map, every voice, every word was created by artificial intelligence — orchestrated entirely through the Hermes Agent framework.
 
 ## Experience It
 
-Open `index.html` in any modern browser, scroll down, and immerse yourself. Audio narration auto-plays as you enter each chapter. Use arrow keys for keyboard navigation.
+Open `index.html` in any modern browser, scroll down, and immerse yourself.
+
+**Features:**
+- Bilingual content (English / Turkish) with instant language switcher
+- Auto-play narration that follows your scroll position
+- Vintage military maps for every theater of war
+- Combatant flags and front information for each chapter
+- Cinematic film grain, parallax, and scroll-reveal animations
+- Artistic poetic epilogues closing each chapter
+- Keyboard navigation (arrow keys) and chapter dot navigation
 
 ## How It Was Made
 
 | Layer | Tool | AI Model |
 |---|---|---|
 | **Research & Script** | `web_search`, `web_extract` | Kimi K2.6 |
-| **Images** | `image_generate` | FLUX (FAL.ai) |
+| **Photographs** | `image_generate` | FLUX (FAL.ai) |
+| **Maps** | `image_generate` | FLUX (FAL.ai) |
 | **Voice Narration** | `text_to_speech` | Edge TTS |
 | **Assembly** | `write_file`, `patch` | Hermes Agent pipeline |
 
 ### Architecture
 
 ```
-outline.json (story + prompts)
+outline.json (bilingual story + prompts + combatants + maps)
       |
       v
-generate.py  --->  image_generate()  --->  8 unique AI images
-      |            text_to_speech()   --->  8 narrated audio tracks
+generate.py  --->  image_generate()  --->  8 photographs + 8 maps
+      |            text_to_speech()   --->  16 narrated tracks (EN/TR)
       v
-template.html (scrollytelling engine)
+template.html (scrollytelling engine with language switcher)
       |
       v
-  index.html  (single-file documentary)
+  index.html  (single-file bilingual documentary)
 ```
 
 ## Chapters
 
-1. **The Phoney War** — September 1939: The silence before the storm
-2. **The Sands of Dunkirk** — May 1940: Civilian boats under fire
-3. **The Blitz: Life Underground** — 1940-41: Singing beneath the bombs
-4. **Stalingrad: The Frozen Hell** — 1942-43: Minus forty degrees
-5. **The Unbreakable Tongue** — 1942-45: Navajo Code Talkers
-6. **The White Rose** — 1942-43: Sophie Scholl's resistance
-7. **Liberation and Its Weight** — 1944-45: The price of freedom
-8. **The Shadows Remain** — August 1945: Hiroshima's eternal echo
-
-## Creative Approach
-
-Rather than a traditional documentary, this is a **living document**: an autonomous pipeline where the agent researches, writes, illustrates, narrates, and assembles a cinematic experience from a single theme prompt. The "creative" aspect is not just the output — it's the *process* itself: an AI agent acting as director, screenwriter, cinematographer, and sound designer.
+1. **The Phoney War / Sahte Savaş** — Western Front — Sep 1939
+2. **The Sands of Dunkirk / Dunkirk Kumları** — Dunkirk Evacuation — May 1940
+3. **The Blitz / Blitz** — Home Front — Sep 1940
+4. **Stalingrad / Stalingrad** — Eastern Front — Aug 1942
+5. **The Unbreakable Tongue / Kırılamayan Dil** — Pacific Theater — 1942-45
+6. **The White Rose / Beyaz Gül** — Internal Resistance — 1942-43
+7. **Liberation and Its Weight / Kurtuluş ve Ağırlığı** — Allied Advance — 1944-45
+8. **The Shadows Remain / Gölgeler Kalır** — Atomic Warfare — Aug 1945
 
 ## File Structure
 
@@ -55,7 +61,8 @@ Rather than a traditional documentary, this is a **living document**: an autonom
 .
 ├── index.html    # The documentary (self-contained)
 ├── images/       # 8 AI-generated photographs
-└── audio/        # 8 AI-narrated voice tracks
+├── maps/         # 8 AI-generated theater maps
+└── audio/        # 16 AI-narrated voice tracks (EN + TR)
 ```
 
 ## Run Locally
@@ -63,7 +70,6 @@ Rather than a traditional documentary, this is a **living document**: an autonom
 No server required. Simply open `index.html` in a browser.
 
 ```bash
-cd deploy/
 python3 -m http.server 8080
 # open http://localhost:8080
 ```
@@ -71,7 +77,7 @@ python3 -m http.server 8080
 ## Credits
 
 - Built with [Hermes Agent](https://github.com/NousResearch/hermes-agent) by NousResearch
-- Images generated via [FAL.ai](https://fal.ai) FLUX model
+- Images & maps generated via [FAL.ai](https://fal.ai) FLUX model
 - Narration powered by Kimi Moonshot AI + Edge TTS
 - Created for the **Hermes Agent Creative Hackathon** (April 2026)
 

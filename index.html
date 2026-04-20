@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Silence Between Thunder: Untold Stories of World War II</title>
+<title>{{TITLE}}</title>
 <style>
   :root {
     --bg: #080808;
@@ -23,7 +23,6 @@
     overflow-x: hidden;
   }
 
-  /* Film grain overlay */
   body::before {
     content: '';
     position: fixed;
@@ -36,7 +35,6 @@
     background-size: 200px 200px;
   }
 
-  /* Progress bar */
   #progress-bar {
     position: fixed;
     top: 0; left: 0; height: 2px;
@@ -47,7 +45,6 @@
     box-shadow: 0 0 8px var(--accent);
   }
 
-  /* Vignette overlay between sections */
   .vignette {
     position: fixed;
     inset: 0;
@@ -56,7 +53,6 @@
     background: radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.6) 100%);
   }
 
-  /* Chapter nav dots */
   #chapter-nav {
     position: fixed;
     right: 1.5rem;
@@ -85,7 +81,42 @@
     background: rgba(212,175,55,0.6);
   }
 
-  /* Hero */
+  /* Language switcher */
+  #lang-switch {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.2rem;
+    z-index: 1003;
+    display: flex;
+    gap: 0.3rem;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    padding: 0.3rem;
+    border-radius: 100px;
+    border: 1px solid rgba(212,175,55,0.2);
+  }
+  #lang-switch button {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 0.9rem;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+  }
+  #lang-switch button.active {
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+  }
+  #lang-switch button:hover:not(.active) {
+    color: var(--fg);
+  }
+
   .hero {
     height: 100vh;
     display: flex;
@@ -132,7 +163,6 @@
     animation: bounce 2s infinite;
   }
 
-  /* Section */
   .section {
     min-height: 100vh;
     position: relative;
@@ -166,7 +196,7 @@
   .section-content {
     position: relative;
     z-index: 2;
-    max-width: 700px;
+    max-width: 760px;
     padding: 4rem 2.5rem;
     text-align: center;
     opacity: 0;
@@ -198,9 +228,74 @@
     font-size: 0.85rem;
     color: var(--muted);
     font-style: italic;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     opacity: 0.7;
   }
+
+  /* Combatants / Flags */
+  .combatants {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem 1.5rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  .combatant {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.04);
+    padding: 0.35rem 0.8rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .combatant .flag { font-size: 1.1rem; }
+  .combatant .cname { color: var(--muted); }
+  .combatant.axis { border-color: rgba(200,50,50,0.2); }
+  .combatant.allied { border-color: rgba(50,100,200,0.2); }
+  .combatant.resistance { border-color: rgba(212,175,55,0.25); }
+  .front-label {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Map */
+  .map-wrap {
+    margin: 2rem auto;
+    max-width: 480px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(212,175,55,0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease 0.4s, transform 1s ease 0.4s;
+  }
+  .section.active .map-wrap {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+  .map-wrap img {
+    width: 100%;
+    display: block;
+    filter: sepia(0.3) contrast(0.95);
+  }
+  .map-caption {
+    font-size: 0.7rem;
+    color: var(--muted);
+    padding: 0.5rem;
+    background: rgba(0,0,0,0.4);
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+  }
+
   .section-text {
     font-size: 1.1rem;
     line-height: 2.0;
@@ -209,9 +304,29 @@
     margin: 0 auto;
   }
 
-  /* Audio player styling */
-  .audio-wrap {
+  /* Artistic Epilogue */
+  .artistic-epilogue {
     margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(212,175,55,0.15);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1s ease 0.8s, transform 1s ease 0.8s;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .section.active .artistic-epilogue {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+
+  /* Audio */
+  .audio-wrap {
+    margin-top: 2rem;
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s;
@@ -228,7 +343,6 @@
     filter: invert(1) contrast(0.7) brightness(0.9);
   }
 
-  /* CTA between sections */
   .section-cta {
     position: absolute;
     bottom: 2rem;
@@ -246,7 +360,6 @@
     opacity: 0.4;
   }
 
-  /* References */
   .references {
     padding: 5rem 2rem;
     background: #050505;
@@ -297,7 +410,6 @@
     border-color: var(--accent);
   }
 
-  /* Epilogue */
   .epilogue {
     padding: 4rem 2rem;
     text-align: center;
@@ -337,6 +449,9 @@
     .section-content { padding: 3rem 1.5rem; }
     .section-text { font-size: 1rem; line-height: 1.85; }
     #chapter-nav { display: none; }
+    #lang-switch { top: 0.8rem; right: 0.8rem; }
+    .combatants { gap: 0.5rem 1rem; }
+    .map-wrap { max-width: 100%; }
   }
 </style>
 </head>
@@ -345,112 +460,173 @@
 <div class="vignette"></div>
 <div id="chapter-nav"></div>
 
+<div id="lang-switch">
+  <button class="active" data-lang="en">EN</button>
+  <button data-lang="tr">TR</button>
+</div>
+
 <header class="hero">
-  <h1>The Silence Between Thunder: Untold Stories of World War II</h1>
-  <p class="subtitle">A Living Documentary</p>
-  <p class="scroll-hint">Scroll to begin</p>
+  <h1 data-en="The Silence Between Thunder" data-tr="Gök Gürültüsünün Arasındaki Sessizlik">The Silence Between Thunder</h1>
+  <p class="subtitle" data-en="Untold Stories of World War II" data-tr="İkinci Dünya Savaşı'nın Bilinmeyen Hikayeleri">Untold Stories of World War II</p>
+  <p class="scroll-hint" data-en="Scroll to begin" data-tr="Başlamak için kaydır">Scroll to begin</p>
 </header>
 
 <section class="section" id="phoney-war">
     <div class="section-bg" style="background-image: url('images/phoney-war.png');"></div>
     <div class="section-content">
-        <div class="section-label">September 1939 – April 1940</div>
-        <h2>The Phoney War</h2>
-        <div class="section-text">On September third, nineteen thirty-nine, Britain and France declared war on Germany. And then... nothing. For eight months, the world held its breath. They called it the Phoney War. Soldiers dug trenches in parks that children had played in just days before. Mothers sent their children away to the countryside, clutching gas masks they prayed would never be needed. In the silence between thunder, life tried to continue as if the world had not already changed forever.</div>
+        <div class="section-label" data-en="September 1939 – April 1940" data-tr="Eylül 1939 – Nisan 1940">September 1939 – April 1940</div>
+        <h2 data-en="The Phoney War" data-tr="Sahte Savaş">The Phoney War</h2>
+        <div class="section-date" data-en="Western Front" data-tr="Batı Cephesi">Western Front</div>
+        <div class="combatants"><span class="combatant allied"><span class="flag">🇬🇧</span><span class="cname">United Kingdom</span></span><span class="combatant allied"><span class="flag">🇫🇷</span><span class="cname">France</span></span><span class="combatant axis"><span class="flag">🇩🇪</span><span class="cname">Germany</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/phoney-war.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Western Front" data-tr="Harita: Batı Cephesi">Map: Western Front</div>
+            </div>
+        <div class="section-text" data-en="On September third, nineteen thirty-nine, Britain and France declared war on Germany. And then... nothing. For eight months, the world held its breath. They called it the Phoney War. Soldiers dug trenches in parks that children had played in just days before. Mothers sent their children away to the countryside, clutching gas masks they prayed would never be needed. In the silence between thunder, life tried to continue as if the world had not already changed forever." data-tr="3 Eylül 1939'da İngiltere ve Fransa Almanya'ya savaş açtı. Ve sonra... hiçbir şey olmadı. Sekiz ay boyunca dünya nefesini tuttu. Buna Sahte Savaş dediler. Askerler, çocukların birkaç gün önce oynadığı parklarda siper kazdı. Anneler, asla kullanmak zorunda kalmayacaklarını umarak gaz maskelerini sıkıca tutarak çocuklarını kırsala gönderdi. Gök gürültüsünün arasındaki sessizlikte, hayat dünyanın çoktan değişmediği gibi devam etmeye çalıştı.">On September third, nineteen thirty-nine, Britain and France declared war on Germany. And then... nothing. For eight months, the world held its breath. They called it the Phoney War. Soldiers dug trenches in parks that children had played in just days before. Mothers sent their children away to the countryside, clutching gas masks they prayed would never be needed. In the silence between thunder, life tried to continue as if the world had not already changed forever.</div>
+        <div class="artistic-epilogue" data-en="Before the storm, the world whispered instead of shouting." data-tr="Fırtına öncesinde, dünya bağırmak yerine fısıldadı.">Before the storm, the world whispered instead of shouting.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/phoney-war.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/phoney-war-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 <section class="section" id="dunkirk">
     <div class="section-bg" style="background-image: url('images/dunkirk.png');"></div>
     <div class="section-content">
-        <div class="section-label">May 26 – June 4, 1940</div>
-        <h2>The Sands of Dunkirk</h2>
-        <div class="section-text">Three hundred and thirty-eight thousand men stood on a beach, backs to the sea, facing an enemy that never stopped coming. At Dunkirk, the British Expeditionary Force was not fighting for victory. They were fighting for escape. Civilian boats crossed the English Channel under fire—fishing vessels, pleasure yachts, lifeboats. A nineteen-year-old soldier wrote in his diary: 'I have never seen so many men look so small against so much sky.'</div>
+        <div class="section-label" data-en="May 26 – June 4, 1940" data-tr="26 Mayıs – 4 Haziran 1940">May 26 – June 4, 1940</div>
+        <h2 data-en="The Sands of Dunkirk" data-tr="Dunkirk Kumları">The Sands of Dunkirk</h2>
+        <div class="section-date" data-en="Dunkirk Evacuation" data-tr="Dunkirk Tahliyesi">Dunkirk Evacuation</div>
+        <div class="combatants"><span class="combatant allied"><span class="flag">🇬🇧</span><span class="cname">United Kingdom</span></span><span class="combatant allied"><span class="flag">🇫🇷</span><span class="cname">France</span></span><span class="combatant allied"><span class="flag">🇧🇪</span><span class="cname">Belgium</span></span><span class="combatant axis"><span class="flag">🇩🇪</span><span class="cname">Germany</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/dunkirk.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Dunkirk Evacuation" data-tr="Harita: Dunkirk Tahliyesi">Map: Dunkirk Evacuation</div>
+            </div>
+        <div class="section-text" data-en="Three hundred and thirty-eight thousand men stood on a beach, backs to the sea, facing an enemy that never stopped coming. At Dunkirk, the British Expeditionary Force was not fighting for victory. They were fighting for escape. Civilian boats crossed the English Channel under fire—fishing vessels, pleasure yachts, lifeboats. A nineteen-year-old soldier wrote in his diary: 'I have never seen so many men look so small against so much sky.'" data-tr="Üç yüz otuz sekiz bin adam bir plajda duruyordu, denize sırtları vermiş, hiç durmayan düşmana karşı. Dunkirk'te İngiliz Seferi Kuvvetleri zafer için savaşmıyordu. Kaçmak için savaşıyorlardı. Sivil tekneler ateş altında Manş Denizi'ni geçti—balıkçı tekneleri, yatlar, cankurtaranlar. On dokuz yaşındaki bir asker günlüğüne şöyle yazdı: 'Bu kadar gökyüzüne karşı bu kadar çok adamın bu kadar küçük göründüğünü hiç görmemiştim.'">Three hundred and thirty-eight thousand men stood on a beach, backs to the sea, facing an enemy that never stopped coming. At Dunkirk, the British Expeditionary Force was not fighting for victory. They were fighting for escape. Civilian boats crossed the English Channel under fire—fishing vessels, pleasure yachts, lifeboats. A nineteen-year-old soldier wrote in his diary: 'I have never seen so many men look so small against so much sky.'</div>
+        <div class="artistic-epilogue" data-en="In retreat, they found a strange kind of courage." data-tr="Çekilirken, tuhaf bir cesaret türü buldular.">In retreat, they found a strange kind of courage.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/dunkirk.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/dunkirk-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 <section class="section" id="blitz">
     <div class="section-bg" style="background-image: url('images/blitz.png');"></div>
     <div class="section-content">
-        <div class="section-label">September 1940 – May 1941</div>
-        <h2>The Blitz: Life Underground</h2>
-        <div class="section-text">For fifty-seven consecutive nights, London burned. The Luftwaffe came in waves, turning streets into craters and homes into memories. But beneath the city, a different world emerged. Londoners transformed Underground stations into dormitories. Children slept between train tracks. A woman named Elsie wrote: 'We sing down here. When the bombs fall above, we sing louder, so the children cannot hear the world breaking.'</div>
+        <div class="section-label" data-en="September 1940 – May 1941" data-tr="Eylül 1940 – Mayıs 1941">September 1940 – May 1941</div>
+        <h2 data-en="The Blitz: Life Underground" data-tr="Blitz: Yeraltında Yaşam">The Blitz: Life Underground</h2>
+        <div class="section-date" data-en="Home Front / Battle of Britain" data-tr="İç Cephe / Britanya Savaşı">Home Front / Battle of Britain</div>
+        <div class="combatants"><span class="combatant allied"><span class="flag">🇬🇧</span><span class="cname">United Kingdom</span></span><span class="combatant axis"><span class="flag">🇩🇪</span><span class="cname">Germany</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/blitz.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Home Front / Battle of Britain" data-tr="Harita: İç Cephe / Britanya Savaşı">Map: Home Front / Battle of Britain</div>
+            </div>
+        <div class="section-text" data-en="For fifty-seven consecutive nights, London burned. The Luftwaffe came in waves, turning streets into craters and homes into memories. But beneath the city, a different world emerged. Londoners transformed Underground stations into dormitories. Children slept between train tracks. A woman named Elsie wrote: 'We sing down here. When the bombs fall above, we sing louder, so the children cannot hear the world breaking.'" data-tr="Üç elli yedi ardışık gece boyunca Londra yandı. Luftwaffe dalgalar halinde geldi, sokakları kraterlere ve evleri anılara dönüştürdü. Ama şehrin altında, farklı bir dünya ortaya çıktı. Londralılar metro istasyonlarını yatakhanelere dönüştürdü. Çocuklar tren rayları arasında uyudu. Elsie adında bir kadın şöyle yazdı: 'Burada şarkı söylüyoruz. Bombalar yukarıdan düşerken daha yüksek sesle şarkı söylüyoruz ki çocuklar dünyanın parçalandığını duyamasın.'">For fifty-seven consecutive nights, London burned. The Luftwaffe came in waves, turning streets into craters and homes into memories. But beneath the city, a different world emerged. Londoners transformed Underground stations into dormitories. Children slept between train tracks. A woman named Elsie wrote: 'We sing down here. When the bombs fall above, we sing louder, so the children cannot hear the world breaking.'</div>
+        <div class="artistic-epilogue" data-en="Beneath the bombs, humanity hummed its defiance." data-tr="Bombaların altında, insanlık meydan okumasını mırıldandı.">Beneath the bombs, humanity hummed its defiance.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/blitz.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/blitz-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 <section class="section" id="stalingrad">
     <div class="section-bg" style="background-image: url('images/stalingrad.png');"></div>
     <div class="section-content">
-        <div class="section-label">August 1942 – February 1943</div>
-        <h2>Stalingrad: The Frozen Hell</h2>
-        <div class="section-text">In Stalingrad, winter was not a season. It was a weapon. Temperatures dropped to minus forty degrees. Fingers froze to rifle triggers. German soldiers, sent to conquer a city that bore their Fuehrer's name, found themselves fighting rats for scraps of bread. Soviet defender Vasily Zaitsev wrote: 'We are not fighting for the city anymore. We are fighting for the meter of frozen ground where our friend died yesterday.' The battle lasted one hundred and ninety-nine days. When it ended, the Volga ran red.</div>
+        <div class="section-label" data-en="August 1942 – February 1943" data-tr="Ağustos 1942 – Şubat 1943">August 1942 – February 1943</div>
+        <h2 data-en="Stalingrad: The Frozen Hell" data-tr="Stalingrad: Donmuş Cehennem">Stalingrad: The Frozen Hell</h2>
+        <div class="section-date" data-en="Eastern Front" data-tr="Doğu Cephesi">Eastern Front</div>
+        <div class="combatants"><span class="combatant allied"><span class="flag">☭</span><span class="cname">Soviet Union</span></span><span class="combatant axis"><span class="flag">🇩🇪</span><span class="cname">Germany</span></span><span class="combatant axis"><span class="flag">🇮🇹</span><span class="cname">Italy</span></span><span class="combatant axis"><span class="flag">🇷🇴</span><span class="cname">Romania</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/stalingrad.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Eastern Front" data-tr="Harita: Doğu Cephesi">Map: Eastern Front</div>
+            </div>
+        <div class="section-text" data-en="In Stalingrad, winter was not a season. It was a weapon. Temperatures dropped to minus forty degrees. Fingers froze to rifle triggers. German soldiers, sent to conquer a city that bore their Fuehrer's name, found themselves fighting rats for scraps of bread. Soviet defender Vasily Zaitsev wrote: 'We are not fighting for the city anymore. We are fighting for the meter of frozen ground where our friend died yesterday.' The battle lasted one hundred and ninety-nine days. When it ended, the Volga ran red." data-tr="Stalingrad'da kış bir mevsim değildi. Bir silahtı. Sıcaklık eksi kırk dereceye düştü. Parmaklar tüfek tetiklerine dondu. Führer'lerinin adını taşıyan bir şehri fethetmeye gönderilen Alman askerleri, kendilerini ekmek kırıntıları için farelerle savaşırken buldu. Sovyet savunmacı Vasily Zaitsev şöyle yazdı: 'Artık şehir için savaşmıyoruz. Dün arkadaşımızın öldüğü donmuş toprak metreyi için savaşıyoruz.' Savaş üç yüz doksan dokuz gün sürdü. Bittiğinde Volga kırmızı aktı.">In Stalingrad, winter was not a season. It was a weapon. Temperatures dropped to minus forty degrees. Fingers froze to rifle triggers. German soldiers, sent to conquer a city that bore their Fuehrer's name, found themselves fighting rats for scraps of bread. Soviet defender Vasily Zaitsev wrote: 'We are not fighting for the city anymore. We are fighting for the meter of frozen ground where our friend died yesterday.' The battle lasted one hundred and ninety-nine days. When it ended, the Volga ran red.</div>
+        <div class="artistic-epilogue" data-en="Hell froze over, and still they fought." data-tr="Cehennem dondu, yine de savaştılar.">Hell froze over, and still they fought.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/stalingrad.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/stalingrad-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 <section class="section" id="navajo">
     <div class="section-bg" style="background-image: url('images/navajo.png');"></div>
     <div class="section-content">
-        <div class="section-label">1942 – 1945</div>
-        <h2>The Unbreakable Tongue</h2>
-        <div class="section-text">In the Pacific theater, the United States military faced a problem they could not bomb their way out of. The Japanese were breaking every code. The solution came from a language that had no alphabet, no dictionary, and fewer than thirty thousand speakers in the entire world. Navajo. Twenty-nine young Navajo men created a code based on their native tongue. 'Fighter plane' became 'hummingbird.' 'Submarine' became 'iron fish.' The Japanese never broke it. Chester Nez, one of the original code talkers, said: 'We fought for a country that did not even let us vote. But we fought because this land is sacred.'</div>
+        <div class="section-label" data-en="1942 – 1945" data-tr="1942 – 1945">1942 – 1945</div>
+        <h2 data-en="The Unbreakable Tongue" data-tr="Kırılamayan Dil">The Unbreakable Tongue</h2>
+        <div class="section-date" data-en="Pacific Theater" data-tr="Pasifik Cephesi">Pacific Theater</div>
+        <div class="combatants"><span class="combatant allied"><span class="flag">🇺🇸</span><span class="cname">United States</span></span><span class="combatant axis"><span class="flag">🇯🇵</span><span class="cname">Japan</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/navajo.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Pacific Theater" data-tr="Harita: Pasifik Cephesi">Map: Pacific Theater</div>
+            </div>
+        <div class="section-text" data-en="In the Pacific theater, the United States military faced a problem they could not bomb their way out of. The Japanese were breaking every code. The solution came from a language that had no alphabet, no dictionary, and fewer than thirty thousand speakers in the entire world. Navajo. Twenty-nine young Navajo men created a code based on their native tongue. 'Fighter plane' became 'hummingbird.' 'Submarine' became 'iron fish.' The Japanese never broke it. Chester Nez, one of the original code talkers, said: 'We fought for a country that did not even let us vote. But we fought because this land is sacred.'" data-tr="Pasifik cephesinde Amerika Birleşik Devletleri ordusu bombalayarak çözemeyeceği bir sorunla karşı karşıyaydı. Japonlar her şifreyi kırıyordu. Çözüm, hiç alfabesi olmayan, sözlüğü olmayan ve dünya üzerinde otuz binden az konuşanı olan bir dilden geldi. Navajo. Yirmi dokuz genç Navajo adam ana dillerine dayalı bir kod oluşturdu. 'Savaş uçağı' 'sinek kuşu' oldu. 'Denizaltı' 'demir balık' oldu. Japonlar bunu asla kıramadı. Orijinal kod konuşmacılardan Chester Nez şöyle dedi: 'Kendimize oy vermemize bile izin vermeyen bir ülke için savaştık. Ama savaştık çünkü bu toprak kutsaldır.'">In the Pacific theater, the United States military faced a problem they could not bomb their way out of. The Japanese were breaking every code. The solution came from a language that had no alphabet, no dictionary, and fewer than thirty thousand speakers in the entire world. Navajo. Twenty-nine young Navajo men created a code based on their native tongue. 'Fighter plane' became 'hummingbird.' 'Submarine' became 'iron fish.' The Japanese never broke it. Chester Nez, one of the original code talkers, said: 'We fought for a country that did not even let us vote. But we fought because this land is sacred.'</div>
+        <div class="artistic-epilogue" data-en="Their silence spoke louder than any artillery." data-tr="Onların sessizliği herhangi bir topçudan daha yüksek sesle konuştu.">Their silence spoke louder than any artillery.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/navajo.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/navajo-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 <section class="section" id="white-rose">
     <div class="section-bg" style="background-image: url('images/white-rose.png');"></div>
     <div class="section-content">
-        <div class="section-label">June 1942 – February 1943</div>
-        <h2>The White Rose</h2>
-        <div class="section-text">While armies clashed across continents, a quieter war was being fought with words and paper. In Munich University, a group of students called the White Rose printed leaflets condemning the Nazi regime. Sophie Scholl was twenty-one years old when she was arrested for distributing anti-war pamphlets. At her trial, she looked at the judge and said: 'What we wrote and said is in many people's minds. You just cannot put all of us in prison.' She was executed four days later. The White Rose bloomed only briefly. But its seeds spread farther than any tank could travel.</div>
+        <div class="section-label" data-en="June 1942 – February 1943" data-tr="Haziran 1942 – Şubat 1943">June 1942 – February 1943</div>
+        <h2 data-en="The White Rose" data-tr="Beyaz Gül">The White Rose</h2>
+        <div class="section-date" data-en="Internal Resistance / Germany" data-tr="İç Direniş / Almanya">Internal Resistance / Germany</div>
+        <div class="combatants"><span class="combatant resistance"><span class="flag">✿</span><span class="cname">White Rose Resistance</span></span><span class="combatant axis"><span class="flag">🇩🇪</span><span class="cname">Nazi Germany</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/white-rose.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Internal Resistance / Germany" data-tr="Harita: İç Direniş / Almanya">Map: Internal Resistance / Germany</div>
+            </div>
+        <div class="section-text" data-en="While armies clashed across continents, a quieter war was being fought with words and paper. In Munich University, a group of students called the White Rose printed leaflets condemning the Nazi regime. Sophie Scholl was twenty-one years old when she was arrested for distributing anti-war pamphlets. At her trial, she looked at the judge and said: 'What we wrote and said is in many people's minds. You just cannot put all of us in prison.' She was executed four days later. The White Rose bloomed only briefly. But its seeds spread farther than any tank could travel." data-tr="Ordular kıtalar arasında çarpışırken, daha sessiz bir savaş kelimelerle ve kağıtla yürütülüyordu. Münih Üniversitesi'nde Beyaz Gül adında bir grup öğrenci Nazileri lanetleyen bildiriler yayımladı. Sophie Scholl, savaş karşıtı broşürler dağıttığı için tutuklandığında yirmi bir yaşındaydı. Mahkemesinde hakime baktı ve şöyle dedi: 'Yazdıklarımız ve söylediklerimiz birçok insanın zihninde. Hepimizi hapse atamazsınız.' Dört gün sonra idam edildi. Beyaz Gül sadece kısa bir süre çiçek açtı. Ama tohumları herhangi bir tankın gidebileceğinden daha uzağa yayıldı.">While armies clashed across continents, a quieter war was being fought with words and paper. In Munich University, a group of students called the White Rose printed leaflets condemning the Nazi regime. Sophie Scholl was twenty-one years old when she was arrested for distributing anti-war pamphlets. At her trial, she looked at the judge and said: 'What we wrote and said is in many people's minds. You just cannot put all of us in prison.' She was executed four days later. The White Rose bloomed only briefly. But its seeds spread farther than any tank could travel.</div>
+        <div class="artistic-epilogue" data-en="Paper cuts deeper than steel." data-tr="Kağıt çelikten daha derin keser.">Paper cuts deeper than steel.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/white-rose.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/white-rose-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 <section class="section" id="liberation">
     <div class="section-bg" style="background-image: url('images/liberation.png');"></div>
     <div class="section-content">
-        <div class="section-label">June 1944 – May 1945</div>
-        <h2>Liberation and Its Weight</h2>
-        <div class="section-text">When Allied boots finally stepped onto liberated soil, the crowds cheered. But liberation is not a moment. It is a weight. In Paris, women who had loved German soldiers had their heads shaved in public squares. In Berlin, children played in the ruins of the Reichstag, scavenging for food where empires had planned conquest. A French resistance fighter wrote in his journal: 'We dreamed of this day for four years. Now that it is here, I look at the faces around me and wonder if anyone truly survives a war, even the victors.'</div>
+        <div class="section-label" data-en="June 1944 – May 1945" data-tr="Haziran 1944 – Mayıs 1945">June 1944 – May 1945</div>
+        <h2 data-en="Liberation and Its Weight" data-tr="Kurtuluş ve Ağırlığı">Liberation and Its Weight</h2>
+        <div class="section-date" data-en="Western & Eastern Fronts / Liberation" data-tr="Batı ve Doğu Cepheleri / Kurtuluş">Western & Eastern Fronts / Liberation</div>
+        <div class="combatants"><span class="combatant allied"><span class="flag">🇺🇸</span><span class="cname">United States</span></span><span class="combatant allied"><span class="flag">🇬🇧</span><span class="cname">United Kingdom</span></span><span class="combatant allied"><span class="flag">🇫🇷</span><span class="cname">France</span></span><span class="combatant allied"><span class="flag">☭</span><span class="cname">Soviet Union</span></span><span class="combatant axis"><span class="flag">🇩🇪</span><span class="cname">Germany</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/liberation.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Western & Eastern Fronts / Liberation" data-tr="Harita: Batı ve Doğu Cepheleri / Kurtuluş">Map: Western & Eastern Fronts / Liberation</div>
+            </div>
+        <div class="section-text" data-en="When Allied boots finally stepped onto liberated soil, the crowds cheered. But liberation is not a moment. It is a weight. In Paris, women who had loved German soldiers had their heads shaved in public squares. In Berlin, children played in the ruins of the Reichstag, scavenging for food where empires had planned conquest. A French resistance fighter wrote in his journal: 'We dreamed of this day for four years. Now that it is here, I look at the faces around me and wonder if anyone truly survives a war, even the victors.'" data-tr="Müttefik botları nihayet kurtarılmış toprağa bastığında kalabalıklar sevinçle bağırdı. Ama kurtuluş bir an değildir. Bir ağırlıktır. Paris'te Alman askerlerini seven kadınların başları halka açık meydanlarda traş edildi. Berlin'de çocuklar Reichstag'ın enkazında oynadı, imparatorlukların fetih planladığı yerde yiyecek topladı. Bir Fransız direnişçi günlüğüne şöyle yazdı: 'Bu günü dört yıldır hayal ettik. Şimdi buradayken, etrafımdaki yüzlere bakıyorum ve bir savaştan gerçekten kimse sağ kurtuluyor mu, hatta galip gelenler bile, diye merak ediyorum.'">When Allied boots finally stepped onto liberated soil, the crowds cheered. But liberation is not a moment. It is a weight. In Paris, women who had loved German soldiers had their heads shaved in public squares. In Berlin, children played in the ruins of the Reichstag, scavenging for food where empires had planned conquest. A French resistance fighter wrote in his journal: 'We dreamed of this day for four years. Now that it is here, I look at the faces around me and wonder if anyone truly survives a war, even the victors.'</div>
+        <div class="artistic-epilogue" data-en="Freedom arrived wearing the mask of sorrow." data-tr="Özgürlük, keder maskesiyle geldi.">Freedom arrived wearing the mask of sorrow.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/liberation.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/liberation-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 <section class="section" id="shadows">
     <div class="section-bg" style="background-image: url('images/shadows.png');"></div>
     <div class="section-content">
-        <div class="section-label">August 1945 and After</div>
-        <h2>The Shadows Remain</h2>
-        <div class="section-text">On August sixth, nineteen forty-five, a single bomb turned Hiroshima into a shadow. Three days later, Nagasaki followed. A schoolgirl named Sadako survived the blast. Ten years later, she died of leukemia, folding paper cranes in her hospital bed, believing that if she made one thousand, she would live. She made six hundred and forty-four. World War Two ended with two mushroom clouds. But its true ending has never arrived. It lives in the walls of Hiroshima. In the empty chairs of Passover dinners. In the silence of veterans who still wake up reaching for a rifle that is no longer there.</div>
+        <div class="section-label" data-en="August 1945 and After" data-tr="Ağustos 1945 ve Sonrası">August 1945 and After</div>
+        <h2 data-en="The Shadows Remain" data-tr="Gölgeler Kalır">The Shadows Remain</h2>
+        <div class="section-date" data-en="Pacific Theater / Atomic Warfare" data-tr="Pasifik Cephesi / Atom Savaşı">Pacific Theater / Atomic Warfare</div>
+        <div class="combatants"><span class="combatant allied"><span class="flag">🇺🇸</span><span class="cname">United States</span></span><span class="combatant axis"><span class="flag">🇯🇵</span><span class="cname">Japan</span></span></div>
+        <div class="map-wrap">
+                <img src="maps/shadows.png" alt="Map" loading="lazy">
+                <div class="map-caption" data-en="Map: Pacific Theater / Atomic Warfare" data-tr="Harita: Pasifik Cephesi / Atom Savaşı">Map: Pacific Theater / Atomic Warfare</div>
+            </div>
+        <div class="section-text" data-en="On August sixth, nineteen forty-five, a single bomb turned Hiroshima into a shadow. Three days later, Nagasaki followed. A schoolgirl named Sadako survived the blast. Ten years later, she died of leukemia, folding paper cranes in her hospital bed, believing that if she made one thousand, she would live. She made six hundred and forty-four. World War Two ended with two mushroom clouds. But its true ending has never arrived. It lives in the walls of Hiroshima. In the empty chairs of Passover dinners. In the silence of veterans who still wake up reaching for a rifle that is no longer there." data-tr="6 Ağustos 1945'te tek bir bomba Hiroşima'yı bir gölgeye dönüştürdü. Üç gün sonra Nagasaki izledi. Sadako adında bir okul kızı patlamadan sağ kurtuldu. On yıl sonra, hastane yatağında kağıt turnalar katlayarak öldü; bin tane yaparsa yaşayacağına inanarak. Altı yüz kırk dört tane yaptı. İkinci Dünya Savaşı iki mantar bulutuyla bitti. Ama asıl sonu asla gelmedi. Hiroşima'nın duvarlarında yaşıyor. Pesah akşam yemeklerinin boş sandalyelerinde. Hâlâ uyanıp artık orada olmayan bir tüfeğe uzanan gazilerin sessizliğinde.">On August sixth, nineteen forty-five, a single bomb turned Hiroshima into a shadow. Three days later, Nagasaki followed. A schoolgirl named Sadako survived the blast. Ten years later, she died of leukemia, folding paper cranes in her hospital bed, believing that if she made one thousand, she would live. She made six hundred and forty-four. World War Two ended with two mushroom clouds. But its true ending has never arrived. It lives in the walls of Hiroshima. In the empty chairs of Passover dinners. In the silence of veterans who still wake up reaching for a rifle that is no longer there.</div>
+        <div class="artistic-epilogue" data-en="The war ended. Its ghosts did not." data-tr="Savaş bitti. Hayaletleri bitmedi.">The war ended. Its ghosts did not.</div>
         <div class="audio-wrap">
-            <audio controls preload="none"><source src="audio/shadows.ogg" type="audio/ogg"></audio>
-        </div>
+                <audio controls preload="none"><source src="audio/shadows-en.ogg" type="audio/ogg"></audio>
+            </div>
     </div>
-    <div class="section-cta">Continue &darr;</div>
+    <div class="section-cta" data-en="Continue &darr;" data-tr="Devam &darr;">Continue &darr;</div>
 </section>
 
 <section class="references">
   <div class="references-inner">
-    <h3>References & Sources</h3>
+    <h3 data-en="References & Sources" data-tr="Kaynaklar">References & Sources</h3>
     <ul>
       <li>Art of Manliness — <a href="https://www.artofmanliness.com/character/military/50-amazing-rarely-seen-photos-from-world-war-ii/" target="_blank">50 Amazing, Rarely-Seen Photos From World War II</a></li>
       <li>National WWII Museum — Oral histories and archival photography</li>
@@ -459,27 +635,48 @@
       <li>White Rose Foundation, Munich — Sophie Scholl diaries and leaflets</li>
       <li>Hiroshima Peace Memorial Museum — Survivor testimonies</li>
       <li>British Library — Dunkirk evacuation eyewitness accounts</li>
-      <li>Images and narration generated by Hermes Agent using Kimi Moonshot AI and FAL.ai</li>
+      <li data-en="Images and narration generated by Hermes Agent using Kimi Moonshot AI and FAL.ai" data-tr="Görseller ve seslendirme, Hermes Agent tarafından Kimi Moonshot AI ve FAL.ai kullanılarak üretildi">Images and narration generated by Hermes Agent using Kimi Moonshot AI and FAL.ai</li>
     </ul>
   </div>
 </section>
 
 <footer class="epilogue">
-  <p>A Living Documentary generated entirely by Hermes Agent<br>Powered by Kimi Moonshot AI &middot; Built for the Hermes Agent Creative Hackathon</p>
-  <div class="badge">Scroll to experience</div>
+  <p data-en="A Living Documentary generated entirely by Hermes Agent<br>Powered by Kimi Moonshot AI &middot; Built for the Hermes Agent Creative Hackathon" data-tr="Hermes Agent tarafından tamamen üretilen Yaşayan Bir Belgesel<br>Kimi Moonshot AI ile &middot; Hermes Agent Creative Hackathon için geliştirildi">A Living Documentary generated entirely by Hermes Agent<br>Powered by Kimi Moonshot AI &middot; Built for the Hermes Agent Creative Hackathon</p>
+  <div class="badge" data-en="Scroll to experience" data-tr="Deneyimlemek için kaydır">Scroll to experience</div>
 </footer>
 
 <script>
 (function() {
+  let currentLang = 'en';
   const sections = document.querySelectorAll('.section');
   const progress = document.getElementById('progress-bar');
   const nav = document.getElementById('chapter-nav');
+  const langBtns = document.querySelectorAll('#lang-switch button');
+
+  // Language switcher
+  function setLang(lang) {
+    currentLang = lang;
+    langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    document.querySelectorAll('[data-en][data-tr]').forEach(el => {
+      el.textContent = el.dataset[lang];
+    });
+    // Update audio sources
+    document.querySelectorAll('audio').forEach(a => {
+      const src = a.querySelector('source');
+      if (src) {
+        const base = src.src.replace(/\.(ogg|mp3)$/, '').replace(/-(en|tr)$/, '');
+        src.src = base + '-' + lang + '.ogg';
+        a.load();
+      }
+    });
+  }
+  langBtns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
   // Build chapter nav
   sections.forEach((sec, i) => {
     const dot = document.createElement('a');
     dot.href = '#' + sec.id;
-    dot.title = sec.querySelector('h2')?.textContent || '';
+    dot.title = sec.querySelector('h2')?.dataset.en || '';
     dot.addEventListener('click', e => {
       e.preventDefault();
       sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -517,7 +714,6 @@
     progress.style.width = (scrollTop / docHeight * 100) + '%';
   });
 
-  // Keyboard navigation
   document.addEventListener('keydown', e => {
     const current = Array.from(sections).findIndex(s => s.classList.contains('active'));
     if (e.key === 'ArrowDown' && current < sections.length - 1) {
