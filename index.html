@@ -717,7 +717,7 @@
   const nav = document.getElementById('chapter-nav');
   const langBtns = document.querySelectorAll('#lang-switch button');
   const bgMusic = document.getElementById('bg-music');
-  if (bgMusic) bgMusic.volume = 0.25;
+  if (bgMusic) bgMusic.volume = 0.75;
 
   // Language switcher
   function setLang(lang) {
@@ -771,9 +771,9 @@
 
   // Ducking: lower bg music when narration plays
   document.querySelectorAll('.section audio').forEach(a => {
-    a.addEventListener('play', () => { if (bgMusic) bgMusic.volume = 0.08; });
-    a.addEventListener('pause', () => { if (bgMusic) bgMusic.volume = 0.25; });
-    a.addEventListener('ended', () => { if (bgMusic) bgMusic.volume = 0.25; });
+    a.addEventListener('play', () => { if (bgMusic) bgMusic.volume = 0.25; });
+    a.addEventListener('pause', () => { if (bgMusic) bgMusic.volume = 0.75; });
+    a.addEventListener('ended', () => { if (bgMusic) bgMusic.volume = 0.75; });
   });
 
   const observer = new IntersectionObserver((entries) => {
