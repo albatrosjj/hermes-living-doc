@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{TITLE}}</title>
+<title>The Silence Between Thunder</title>
 <style>
   :root {
     --bg: #080808;
@@ -658,7 +658,7 @@
     currentLang = lang;
     langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
     document.querySelectorAll('[data-en][data-tr]').forEach(el => {
-      el.textContent = el.dataset[lang];
+      el.innerHTML = el.dataset[lang];
     });
     // Update audio sources
     document.querySelectorAll('audio').forEach(a => {
