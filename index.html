@@ -771,7 +771,7 @@
 
   // Ducking: lower bg music when narration plays
   document.querySelectorAll('.section audio').forEach(a => {
-    a.addEventListener('play', () => { if (bgMusic) bgMusic.volume = 0.45; });
+    a.addEventListener('play', () => { if (bgMusic) bgMusic.volume = 0.70; });
     a.addEventListener('pause', () => { if (bgMusic) bgMusic.volume = 1.0; });
     a.addEventListener('ended', () => { if (bgMusic) bgMusic.volume = 1.0; });
   });
